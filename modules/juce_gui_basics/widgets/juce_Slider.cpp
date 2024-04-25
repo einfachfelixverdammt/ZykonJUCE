@@ -1275,6 +1275,8 @@ public:
     {
         auto buttonRect = sliderRect;
 
+        DBG(" textBoyPos: " + juce::String(textBoxPos));
+
         if (textBoxPos == TextBoxLeft || textBoxPos == TextBoxRight)
             buttonRect.expand (-2, 0);
         else
@@ -1284,18 +1286,47 @@ public:
 
         if (incDecButtonsSideBySide)
         {
-            decButton->setBounds (buttonRect.removeFromLeft (buttonRect.getWidth() / 2));
-            decButton->setConnectedEdges (Button::ConnectedOnRight);
-            incButton->setConnectedEdges (Button::ConnectedOnLeft);
+            if (textBoxPos == TextBoxCentered )
+            {
+                // NEW CODE added by me
+                float w = valueBox->getWidth();
+                auto y = buttonRect.toFloat().getWidth();
+                auto buttonWidth = (y - w) / 4.f;
+
+                DBG("work");
+                
+                //decButtonArea = decButtonArea.reduced(decButtonArea.getWidth() * 0.3, decButtonArea.getHeight() * 0.3);
+                //incButtonArea = incButtonArea.reduced(incButtonArea.getWidth() * 0.4, incButtonArea.getHeight() * 0.4);
+                decButton->setBounds(buttonRect.removeFromLeft(buttonWidth).toNearestInt());
+                incButton->setBounds(buttonRect.removeFromRight(buttonWidth).toNearestInt());
+                valueBox->setBounds(buttonRect);
+            }
+            else if (textBoxPos == NoTextBox)
+            {
+                //Actually new code
+                auto buttonWidth = buttonRect.getWidth() / 6.f;
+                auto diff = buttonRect.toFloat().getWidth() - buttonWidth * 2.f;
+                decButton->setBounds(buttonRect.removeFromLeft(buttonWidth).reduced(buttonWidth * 0.1f));
+                buttonRect.removeFromLeft(diff);
+                incButton->setBounds(buttonRect.reduced(buttonWidth * 0.1f));
+            }
+            else
+            {
+                decButton->setBounds(buttonRect.removeFromLeft(buttonRect.getWidth() / 2));
+                decButton->setConnectedEdges(Button::ConnectedOnRight);
+                incButton->setConnectedEdges(Button::ConnectedOnLeft);
+                incButton->setBounds(buttonRect);
+            }
         }
         else
         {
             decButton->setBounds (buttonRect.removeFromBottom (buttonRect.getHeight() / 2));
             decButton->setConnectedEdges (Button::ConnectedOnTop);
             incButton->setConnectedEdges (Button::ConnectedOnBottom);
+            incButton->setBounds(buttonRect);
         }
 
-        incButton->setBounds (buttonRect);
+        
     }
 
     //==============================================================================
