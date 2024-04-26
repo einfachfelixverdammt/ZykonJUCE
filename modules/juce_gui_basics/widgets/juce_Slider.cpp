@@ -1304,11 +1304,9 @@ public:
             else if (textBoxPos == NoTextBox)
             {
                 //Actually new code
-                auto buttonWidth = buttonRect.getWidth() / 6.f;
-                auto diff = buttonRect.toFloat().getWidth() - buttonWidth * 2.f;
-                decButton->setBounds(buttonRect.removeFromLeft(buttonWidth).reduced(buttonWidth * 0.1f));
-                buttonRect.removeFromLeft(diff);
-                incButton->setBounds(buttonRect.reduced(buttonWidth * 0.1f));
+                auto buttonWidth = buttonRect.toFloat().getWidth() / 6.f;
+                decButton->setBounds(buttonRect.toFloat().removeFromLeft(buttonWidth).reduced(buttonWidth * 0.1f).toNearestInt());
+                incButton->setBounds(buttonRect.toFloat().removeFromRight(buttonWidth).reduced(buttonWidth * 0.1f).toNearestInt());
             }
             else
             {
