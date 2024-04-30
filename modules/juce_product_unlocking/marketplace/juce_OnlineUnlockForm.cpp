@@ -167,8 +167,9 @@ OnlineUnlockForm::OnlineUnlockForm (OnlineUnlockStatus& s,
                                     bool overlayHasCancelButton)
     : message (String(), userInstructions),
       passwordBox (String(), getDefaultPasswordChar()),
-      registerButton (TRANS("Register")),
+      registerButton (TRANS("Activate")),
       cancelButton (TRANS ("Cancel")),
+      createAccountButton("Create Account", juce::URL("https://www.zykon-software.store/account/register")),
       status (s),
       showOverlayCancelButton (overlayHasCancelButton)
 {
@@ -184,6 +185,7 @@ OnlineUnlockForm::OnlineUnlockForm (OnlineUnlockStatus& s,
     addAndMakeVisible (emailBox);
     addAndMakeVisible (passwordBox);
     addAndMakeVisible (registerButton);
+    addAndMakeVisible (createAccountButton);
 
     if (hasCancelButton)
         addAndMakeVisible (cancelButton);
@@ -226,14 +228,15 @@ void OnlineUnlockForm::resized()
     auto buttonArea = r.removeFromBottom (buttonHeight);
     registerButton.changeWidthToFitText (buttonHeight);
     cancelButton.changeWidthToFitText (buttonHeight);
+    createAccountButton.changeWidthToFitText();
 
     const int gap = 20;
-    buttonArea = buttonArea.withSizeKeepingCentre (registerButton.getWidth()
-                                                     + (cancelButton.isVisible() ? gap + cancelButton.getWidth() : 0),
+    buttonArea = buttonArea.withSizeKeepingCentre(registerButton.getWidth()
+        + (cancelButton.isVisible() ? gap + cancelButton.getWidth() : 0),
                                                    buttonHeight);
     registerButton.setBounds (buttonArea.removeFromLeft (registerButton.getWidth()));
     buttonArea.removeFromLeft (gap);
-    cancelButton.setBounds (buttonArea);
+    cancelButton.setBounds (buttonArea.removeFromLeft(cancelButton.getWidth()));
 
     r.removeFromBottom (20);
 
@@ -252,8 +255,8 @@ void OnlineUnlockForm::resized()
     emailBox.setInputRestrictions (512);
     emailBox.setFont (font);
 
-    r.removeFromBottom (20);
-
+    r.removeFromBottom (10);
+    createAccountButton.setBounds(r.removeFromBottom(20));
     message.setBounds (r);
 
     if (unlockingOverlay != nullptr)

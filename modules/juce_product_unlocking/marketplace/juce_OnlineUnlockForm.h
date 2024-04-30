@@ -78,6 +78,7 @@ public:
     Label message;
     TextEditor emailBox, passwordBox;
     TextButton registerButton, cancelButton;
+    HyperlinkButton createAccountButton;
 
 private:
     OnlineUnlockStatus& status;
