@@ -169,7 +169,7 @@ OnlineUnlockForm::OnlineUnlockForm (OnlineUnlockStatus& s,
       passwordBox (String(), getDefaultPasswordChar()),
       registerButton (TRANS("Activate")),
       cancelButton (TRANS ("Cancel")),
-      createAccountButton("Create Account", juce::URL("https://www.zykon-software.store/account/register")),
+      createAccountButton("Create Account", juce::URL("https://www.zykon-software.store/account/register?plug=1")),
       status (s),
       showOverlayCancelButton (overlayHasCancelButton)
 {
